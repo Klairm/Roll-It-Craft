@@ -1,0 +1,7 @@
+{
+    "parent":"block/cross",
+    "textures" : {
+        "cross" : "projectm:blocks/weed_plant"
+    },
+    "render_type" : "cutout"
+}

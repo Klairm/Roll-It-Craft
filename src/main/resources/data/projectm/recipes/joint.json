@@ -1,0 +1,19 @@
+{
+    "type" : "minecraft:crafting_shaped",
+    "pattern" : [
+        "##",
+        "//",
+        "  "
+    ],
+    "key" : {
+        "#" : {
+            "item" : "projectm:grinded_weed"
+        } , 
+        "/" :{
+             "item" : "minecraft:paper"
+        }
+    },
+    "result" : {
+        "item" : "projectm:joint"
+    }
+}
