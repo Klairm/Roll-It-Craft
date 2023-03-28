@@ -5,11 +5,14 @@ import java.util.function.Supplier;
 import com.github.klairm.projectm.ProjectM;
 
 import blocks.DrugPlant;
+import blocks.DryingRack;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -23,9 +26,11 @@ public class BlockInit {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS,
 			ProjectM.MOD_ID);
 
-	public static final RegistryObject<Block> WEED_PLANT = BLOCKS.register("weed_plant",
+	public static final RegistryObject<DrugPlant> WEED_PLANT = BLOCKS.register("weed_plant",
 			() -> new DrugPlant(BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak()
-					.sound(SoundType.GRASS),5));
+					.sound(SoundType.GRASS), 5));
+	public static final RegistryObject<Block> DRYING_RACK = BLOCKS.register("drying_rack",
+			() -> new DryingRack(Block.Properties.copy(Blocks.STONE)));
 
 	@SubscribeEvent
 	public static void onRegisterItems(final RegisterEvent event) {
