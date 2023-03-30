@@ -69,7 +69,7 @@ public class DrugSeeds extends Item {
 
 	@Override
 	public UseAnim getUseAnimation(ItemStack p_41452_) {
-
+		// FIXME: For some reason the animation is never triggered?
 		return UseAnim.SPEAR;
 	}
 

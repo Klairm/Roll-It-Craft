@@ -42,6 +42,7 @@ public class BlockInit {
 				event.register(ForgeRegistries.Keys.ITEMS, blockRegistryObject.getId(), blockItemFactory);
 			});
 		}
+
 	}
 
 }
