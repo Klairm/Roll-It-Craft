@@ -3,25 +3,39 @@ package blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SugarCaneBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
+
 import net.minecraft.world.level.material.FluidState;
 
 public class DrugPlant extends SugarCaneBlock {
 	private int maxHeight;
-	
 
 	public DrugPlant(Properties settings, int maxHeight) {
 		super(settings);
 		this.maxHeight = maxHeight;
 
+	}
+
+	@Override
+	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity entity,
+			ItemStack itemStack) {
+		player.awardStat(Stats.BLOCK_MINED.get(this));
+		player.causeFoodExhaustion(0.005F);
+
+		if (level.getBlockState(pos.below()) == this.defaultBlockState()) {
+			dropResources(state, level, pos, entity, player, itemStack);
+		}
 	}
 
 	@Override
