@@ -5,7 +5,10 @@
 	"item.projectm.weed_seeds" : "Weed Seeds",
 	"item.projectm.grinder" : "Grinder",
 	"item.projectm.grinded_weed": "Grinded Weed",
-	"block.projectm.weed_plant" : "Weed Plant"
+	"block.projectm.weed_plant" : "Weed Plant",
+	"block.projectm.drying_rack": "Drying Rack"
+	
+	
 	
 	
 }

@@ -19,7 +19,7 @@ public class DryingRackTile extends BlockEntity implements EntityBlock {
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, BlockEntity be) {
-
+		
 		if (!level.isClientSide) {
 			level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 10,
 					1.0F, true);

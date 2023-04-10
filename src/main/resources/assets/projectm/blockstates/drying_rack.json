@@ -1,7 +1,20 @@
 {
-    "variants": {
-        "": {
-            "model": "projectm:block/drying_rack"
-        }
-    }
-} 
+	"variants": {
+		"facing=north": {
+			"model": "projectm:block/drying_rack"
+		},
+		"facing=south": {
+			"model": "projectm:block/drying_rack",
+			"y": 180
+		},
+		"facing=west": {
+			"model": "projectm:block/drying_rack",
+			"y": 270
+		},
+		
+		"facing=east": {
+			"model": "projectm:block/drying_rack",
+			"y": 90
+		}
+	}
+}

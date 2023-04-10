@@ -1,7 +1,43 @@
 {
-    "parent":"block/cube_all",
-    "textures" : {
-        "all" : "projectm:blocks/pseudo"
-    },
-    "render_type": "solid"
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "projectm:blocks/drying_rack",
+		"particle": "projectm:blocks/drying_rack"
+	},
+	"elements": [
+		{
+			"from": [0, 11, 14],
+			"to": [16, 15, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 4], "texture": "#0"},
+				"east": {"uv": [0, 12, 2, 16], "texture": "#0"},
+				"south": {"uv": [0, 4, 16, 8], "texture": "#0"},
+				"west": {"uv": [2, 12, 4, 16], "texture": "#0"},
+				"up": {"uv": [16, 10, 0, 8], "texture": "#0"},
+				"down": {"uv": [16, 10, 0, 12], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, -8, -8.75]
+		},
+		"thirdperson_lefthand": {
+			"translation": [5.5, -2, -7.5]
+		},
+		"firstperson_righthand": {
+			"translation": [0.5, -3.25, 0],
+			"scale": [0.74, 0.56, 0]
+		},
+		"ground": {
+			"translation": [0.25, -7, -7.25],
+			"scale": [0.94, 1, 1]
+		},
+		"gui": {
+			"translation": [0, -10.25, 0]
+		},
+		"fixed": {
+			"translation": [-0.25, -4, -9.5]
+		}
+	}
 }
