@@ -27,7 +27,8 @@ public class Joint extends Item {
 						.effect(() -> new MobEffectInstance(MobEffects.HUNGER, 2000), 1)
 						.effect(() -> new MobEffectInstance(MobEffects.BLINDNESS, 1000), 1)
 						.effect(() -> new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 1000), 1)
-						.effect(() -> new MobEffectInstance(MobEffects.HEALTH_BOOST, 1000), 1)
+						.effect(() -> new MobEffectInstance(MobEffects.HEALTH_BOOST, 3000), 1)
+						.effect(() -> new MobEffectInstance(MobEffects.WEAKNESS, 1000), 1)
 
 						.build()));
 
