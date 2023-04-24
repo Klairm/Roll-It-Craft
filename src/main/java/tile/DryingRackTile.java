@@ -25,6 +25,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class DryingRackTile extends BlockEntity implements EntityBlock {
+	// TODO: Actually use the item capability correctly, override proper methods.
+
 	boolean isActive = false;
 	protected final int size = 1;
 	int timer = 0;
@@ -46,18 +48,18 @@ public class DryingRackTile extends BlockEntity implements EntityBlock {
 	}
 
 	private ItemStackHandler createInventory() {
-		// TODO Auto-generated method stub
+
 		return new ItemStackHandler(this.size) {
 
 			@Override
 			public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-				// TODO Auto-generated method stub
+
 				return super.extractItem(slot, amount, simulate);
 			}
 
 			@Override
 			public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-				// TODO Auto-generated method stub
+
 				return super.insertItem(slot, stack, simulate);
 			}
 		};
@@ -74,7 +76,7 @@ public class DryingRackTile extends BlockEntity implements EntityBlock {
 				if (dryingEntity.time == 60) {
 					System.out.println(dryingEntity.inventory.getStackInSlot(0));
 					// TODO: Dry the weed after 60 seconds (?)
-					
+
 				}
 			}
 		}
