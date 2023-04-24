@@ -23,7 +23,9 @@ public class ModEvents {
 		if (event.getType() == VillagerProfession.FARMER) {
 			Int2ObjectMap<List<ItemListing>> trades = event.getTrades();
 			trades.get(1).add((trader, rand) -> new MerchantOffer(new ItemStack(Items.EMERALD, 2),
-					new ItemStack(ItemInit.WEED_SEEDS.get(), 5), 10, 8, 0.5F));
+					new ItemStack(ItemInit.WEED_SEEDS.get(), 5), 5, 8, 0.5F));
+			trades.get(1).add((trader, rand) -> new MerchantOffer(new ItemStack(ItemInit.BUD.get(), 10),
+					new ItemStack(ItemInit.GRINDER.get(), 1), 2, 3, 0.8F));
 		}
 	}
 

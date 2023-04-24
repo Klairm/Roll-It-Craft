@@ -42,19 +42,13 @@ public class Joint extends Item {
 			if (entity.canEat(itemstack.getFoodProperties(entity).canAlwaysEat())) {
 				entity.startUsingItem(interactionHand);
 				RandomSource randomsource = entity.getRandom();
-				level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,
-						(double) entity.getX() + 0.5D
-								+ randomsource.nextDouble() / 4.0D * (double) (randomsource.nextBoolean() ? 1 : -1),
-						(double) entity.getY() + 0.4D,
-						(double) entity.getZ() + 0.5D
-								+ randomsource.nextDouble() / 4.0D * (double) (randomsource.nextBoolean() ? 1 : -1),
-						0.0D, 0.005D, 0.0D);
-				// level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,
-				// (double)entity.getX() + 0.5D + randomsource.nextDouble() / 3.0D *
-				// (double)(randomsource.nextBoolean() ? 1 : -1), (double)entity.getY() +
-				// randomsource.nextDouble() + randomsource.nextDouble(), (double)entity.getZ()
-				// + 0.5D + randomsource.nextDouble() / 3.0D *
-				// (double)(randomsource.nextBoolean() ? 1 : -1), 0.0D, 0.005D, 0.5D);
+				for (int i = 0; i < 2; i++) {
+					level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, (double) entity.getX() + 0.8D,
+							(double) entity.getY() + randomsource.nextDouble() + randomsource.nextDouble(),
+							(double) entity.getZ() + 0.5D
+									+ randomsource.nextDouble() / 3.0D * (double) (randomsource.nextBoolean() ? 1 : -1),
+							0, 0.05D, 0.05D);
+				}
 
 				return InteractionResultHolder.consume(itemstack);
 			} else {
