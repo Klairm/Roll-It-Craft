@@ -71,11 +71,13 @@ public class DryingRackTile extends BlockEntity implements EntityBlock {
 		if (dryingEntity.isActive && !level.isClientSide()) {
 			dryingEntity.timer++;
 			if (dryingEntity.timer > 20) { // 1 second is equal to 20 ticks
-
+				dryingEntity.timer = 0;
 				dryingEntity.time++;
+
 				if (dryingEntity.time == 60) {
-					System.out.println(dryingEntity.inventory.getStackInSlot(0));
-					// TODO: Dry the weed after 60 seconds (?)
+					dryingEntity.inventory.extractItem(0, 1, false);
+					dryingEntity.inventory.insertItem(0, new ItemStack(ItemInit.DRY_BUD.get()), false);
+					dryingEntity.setActive();
 
 				}
 			}

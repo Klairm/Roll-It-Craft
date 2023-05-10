@@ -49,13 +49,23 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 
 			if (dryingRack instanceof DryingRackTile) {
 
-				((DryingRackTile) dryingRack).setActive();
-				((DryingRackTile) dryingRack).inventory.insertItem(0, new ItemStack(ItemInit.BUD.get()), false);
-			
+				if (((DryingRackTile) dryingRack).inventory.getStackInSlot(0).isEmpty()) {
+					if (player.getItemInHand(interactionHand).getItem().asItem() == ItemInit.BUD.get()) {
+						((DryingRackTile) dryingRack).inventory.insertItem(0, new ItemStack(ItemInit.BUD.get()), false);
+						((DryingRackTile) dryingRack).setActive();
+
+					}
+
+				} else {
+					player.drop(((DryingRackTile) dryingRack).inventory.getStackInSlot(0), false);
+					((DryingRackTile) dryingRack).inventory.extractItem(0, 1, false);
+					if (((DryingRackTile) dryingRack).getActive()) {
+						((DryingRackTile) dryingRack).setActive();
+					}
+				}
+
 			}
 
-			level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ANVIL_LAND,
-					SoundSource.PLAYERS, 1.0F, 1.0F);
 			return InteractionResult.SUCCESS;
 		}
 		return super.use(state, level, pos, player, interactionHand, hitResult);
@@ -64,7 +74,7 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		// TODO Auto-generated method stub
-		return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
+		return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
 	}
 
 	@Override
