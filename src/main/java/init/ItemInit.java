@@ -18,6 +18,8 @@ public class ItemInit {
 	public static final RegistryObject<Grinder> GRINDER = ITEMS.register("grinder", () -> new Grinder());
 	public static final RegistryObject<Item> BUD = ITEMS.register("bud",
 			() -> new Item(new Item.Properties().tab(instance)));
+	public static final RegistryObject<Item> DRY_BUD = ITEMS.register("dry_bud",
+			() -> new Item(new Item.Properties().tab(instance)));
 
 	public static final RegistryObject<DrugSeeds> WEED_SEEDS = ITEMS.register("weed_seeds",
 			() -> new DrugSeeds(new Item.Properties().tab(instance)));
