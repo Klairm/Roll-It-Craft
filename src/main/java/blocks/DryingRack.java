@@ -1,5 +1,6 @@
 package blocks;
 
+import blockentity.DryingRackBlockEntity;
 import init.BlockEntityInit;
 import init.ItemInit;
 import it.unimi.dsi.fastutil.bytes.Byte2BooleanSortedMaps.SynchronizedSortedMap;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -29,11 +31,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import tile.DryingRackTile;
 
 public class DryingRack extends HorizontalDirectionalBlock implements EntityBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	private static final VoxelShape SHAPE = Block.box(0, 8, 14, 16, 12, 16);
+	private static VoxelShape SHAPE = Block.box(0, 10, 14, 16, 12, 16);
 
 	public DryingRack(Properties props) {
 		super(props);
@@ -47,20 +48,21 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 		if (!level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND) {
 			BlockEntity dryingRack = level.getBlockEntity(pos);
 
-			if (dryingRack instanceof DryingRackTile) {
+			if (dryingRack instanceof DryingRackBlockEntity) {
 
-				if (((DryingRackTile) dryingRack).inventory.getStackInSlot(0).isEmpty()) {
+				if (((DryingRackBlockEntity) dryingRack).inventory.getStackInSlot(0).isEmpty()) {
 					if (player.getItemInHand(interactionHand).getItem().asItem() == ItemInit.BUD.get()) {
-						((DryingRackTile) dryingRack).inventory.insertItem(0, new ItemStack(ItemInit.BUD.get()), false);
-						((DryingRackTile) dryingRack).setActive();
+						((DryingRackBlockEntity) dryingRack).inventory.insertItem(0, new ItemStack(ItemInit.BUD.get()),
+								false);
+						((DryingRackBlockEntity) dryingRack).setActive();
 
 					}
 
 				} else {
-					player.drop(((DryingRackTile) dryingRack).inventory.getStackInSlot(0), false);
-					((DryingRackTile) dryingRack).inventory.extractItem(0, 1, false);
-					if (((DryingRackTile) dryingRack).getActive()) {
-						((DryingRackTile) dryingRack).setActive();
+					player.drop(((DryingRackBlockEntity) dryingRack).inventory.getStackInSlot(0), false);
+					((DryingRackBlockEntity) dryingRack).inventory.extractItem(0, 1, false);
+					if (((DryingRackBlockEntity) dryingRack).getActive()) {
+						((DryingRackBlockEntity) dryingRack).setActive();
 					}
 				}
 
@@ -74,7 +76,7 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
 		// TODO Auto-generated method stub
-		return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection());
+		return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
 	}
 
 	@Override
@@ -92,17 +94,40 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 
-		return new DryingRackTile(pos, state);
+		return new DryingRackBlockEntity(pos, state);
 	}
 
 	@Override
-	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {
+
+		switch (state.getValue(FACING)) {
+
+		case EAST:
+			SHAPE = Block.box(0, 11, 0, 2, 15, 16);
+
+			break;
+		case NORTH:
+			SHAPE = Block.box(0, 11, 14, 16, 15, 16);
+
+			break;
+		case SOUTH:
+			SHAPE = Block.box(0, 11, 0, 16, 15, 2);
+			break;
+
+		case WEST:
+			SHAPE = Block.box(14, 11, 0, 16, 15, 16);
+			break;
+		default:
+			SHAPE = Block.box(0, 10, 14, 16, 12, 16);
+			break;
+
+		}
 
 		return SHAPE;
 	}
@@ -111,7 +136,7 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
 			BlockEntityType<T> type) {
 
-		return type == BlockEntityInit.DRYING_RACK.get() ? DryingRackTile::tick : null;
+		return type == BlockEntityInit.DRYING_RACK.get() ? DryingRackBlockEntity::tick : null;
 	}
 
 }
