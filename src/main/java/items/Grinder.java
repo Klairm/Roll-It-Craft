@@ -23,7 +23,7 @@ public class Grinder extends Item {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player entity, InteractionHand interactionHand) {
-		ItemStack budItemStack = new ItemStack(ItemInit.BUD.get());
+		ItemStack budItemStack = new ItemStack(ItemInit.DRY_BUD.get());
 		ItemStack grindedWeedStack = new ItemStack(ItemInit.GRINDED.get());
 		ItemStack grinder = entity.getItemInHand(interactionHand);
 		Inventory inventory = entity.getInventory();
