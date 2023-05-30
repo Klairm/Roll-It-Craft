@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"///",
+		" # ",
+		"   "
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:string"
+		},
+		"/": {
+			"tag": "minecraft:planks"
+		}
+	},
+	"result": {
+		"item": "projectm:drying_rack"
+	}
+}
