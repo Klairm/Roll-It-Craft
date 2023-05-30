@@ -3,10 +3,9 @@ package blocks;
 import blockentity.DryingRackBlockEntity;
 import init.BlockEntityInit;
 import init.ItemInit;
-import it.unimi.dsi.fastutil.bytes.Byte2BooleanSortedMaps.SynchronizedSortedMap;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -24,13 +23,13 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.StateDefinition.Builder;
+
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class DryingRack extends HorizontalDirectionalBlock implements EntityBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -45,25 +44,28 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
 			InteractionHand interactionHand, BlockHitResult hitResult) {
 
+		BlockEntity dryingRack = level.getBlockEntity(pos);
+		DryingRackBlockEntity dryingRackEntity = (DryingRackBlockEntity) dryingRack;
+
 		if (!level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND) {
-			BlockEntity dryingRack = level.getBlockEntity(pos);
 
 			if (dryingRack instanceof DryingRackBlockEntity) {
 
-				if (((DryingRackBlockEntity) dryingRack).inventory.getStackInSlot(0).isEmpty()) {
+				if (dryingRackEntity.inventory.getStackInSlot(0).isEmpty()) {
 					if (player.getItemInHand(interactionHand).getItem().asItem() == ItemInit.BUD.get()) {
-						((DryingRackBlockEntity) dryingRack).inventory.insertItem(0, new ItemStack(ItemInit.BUD.get()),
-								false);
-						((DryingRackBlockEntity) dryingRack).setActive();
+						dryingRackEntity.inventory.insertItem(0, new ItemStack(ItemInit.BUD.get()), false);
+						dryingRackEntity.setActive();
+						dryingRackEntity.updateEntity();
 
 					}
 
 				} else {
-					player.drop(((DryingRackBlockEntity) dryingRack).inventory.getStackInSlot(0), false);
-					((DryingRackBlockEntity) dryingRack).inventory.extractItem(0, 1, false);
-					if (((DryingRackBlockEntity) dryingRack).getActive()) {
-						((DryingRackBlockEntity) dryingRack).setActive();
+					player.drop(dryingRackEntity.inventory.getStackInSlot(0), false);
+					dryingRackEntity.inventory.extractItem(0, 1, false);
+					if (dryingRackEntity.getActive()) {
+						dryingRackEntity.setActive();
 					}
+					dryingRackEntity.updateEntity();
 				}
 
 			}

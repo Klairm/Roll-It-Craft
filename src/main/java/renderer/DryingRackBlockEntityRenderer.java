@@ -2,23 +2,39 @@ package renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import blockentity.DryingRackBlockEntity;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import tile.DryingRackTile;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 
-public class DryingRackBlockEntityRenderer implements BlockEntityRenderer<DryingRackTile>{
+public class DryingRackBlockEntityRenderer implements BlockEntityRenderer<DryingRackBlockEntity> {
 
 	public DryingRackBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 		super();
-		// TODO Auto-generated constructor stub
+
 	}
 
 	@Override
-	public void render(DryingRackTile p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_,
-			int p_112311_, int p_112312_) {
-		// TODO Auto-generated method stub
-		
+	public void render(DryingRackBlockEntity BE, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+			int packedLight, int packedOverlay) {
+		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+		int i = (int) BE.getBlockPos().asLong();
+
+		if (!BE.inventory.getStackInSlot(0).isEmpty()) {
+			poseStack.pushPose();
+
+			poseStack.translate(0.5f, 0.45f, 0.9f);
+
+			itemRenderer.renderStatic(BE.inventory.getStackInSlot(0), ItemTransforms.TransformType.FIXED, packedLight,
+					packedOverlay, poseStack, bufferSource, i);
+
+			poseStack.popPose();
+		}
+
 	}
 
 }
