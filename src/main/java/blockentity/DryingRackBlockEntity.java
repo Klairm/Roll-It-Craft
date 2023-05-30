@@ -40,7 +40,7 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 	protected final int size = 1;
 	int timer = 0;
 	int time = 0;
-	private final int processTime = 1;
+	private final int processTime = 60;
 
 	public final ItemStackHandler inventory;
 
