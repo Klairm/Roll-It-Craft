@@ -25,6 +25,7 @@ public class ProjectM {
 		ItemInit.ITEMS.register(modEventBus);
 		BlockInit.BLOCKS.register(modEventBus);
 		BlockEntityInit.TILE_ENTITY_TYPES.register(modEventBus);
+
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 

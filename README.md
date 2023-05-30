@@ -9,5 +9,3 @@ having a full lab equipment ( in clandestine way ), and to actually have the ite
 
 ## TODO List
 I have added an [issue](https://github.com/Klairm/Roll-It-Craft/issues/5)  to keep track of the task list and future ideas I have for the mod
-
-Currently targeting 1.19.2
