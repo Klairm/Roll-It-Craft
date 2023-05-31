@@ -78,9 +78,5 @@ public class Joint extends Item {
 
 	}
 
-	@Override
-	public SoundEvent getEatingSound() {
-		return SoundEvents.CAMPFIRE_CRACKLE;
-	}
 
 }
