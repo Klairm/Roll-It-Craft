@@ -33,6 +33,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class DryingRack extends HorizontalDirectionalBlock implements EntityBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+
 	private static VoxelShape SHAPE = Block.box(0, 10, 14, 16, 12, 16);
 
 	public DryingRack(Properties props) {
