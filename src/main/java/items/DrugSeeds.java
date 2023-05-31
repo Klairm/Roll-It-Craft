@@ -6,13 +6,16 @@ import blocks.DrugPlant;
 import init.BlockInit;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -45,6 +48,7 @@ public class DrugSeeds extends Item {
 			blockField = BlockInit.class.getDeclaredField(drugName);
 			Object blockProperty = blockField.get(null);
 			if (blockProperty instanceof RegistryObject<?>) {
+
 				RegistryObject<DrugPlant> registryObj = (RegistryObject<DrugPlant>) blockProperty;
 
 				if (context.getLevel().getBlockState(pos).getBlock() == Blocks.FARMLAND
@@ -67,10 +71,6 @@ public class DrugSeeds extends Item {
 
 	}
 
-	@Override
-	public UseAnim getUseAnimation(ItemStack p_41452_) {
-		// FIXME: For some reason the animation is never triggered?
-		return UseAnim.SPEAR;
-	}
+
 
 }
