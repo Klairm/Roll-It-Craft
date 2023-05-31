@@ -69,14 +69,22 @@ public class Joint extends Item {
 				(double) entity.getZ() + 0.5D
 						+ randomsource.nextDouble() / 4.0D * (double) (randomsource.nextBoolean() ? 1 : -1),
 				0.0D, 0.005D, 0.0D);
-		return super.finishUsingItem(itemStack, level, entity);
+		entity.playSound(getEatingSound(), 50, 1);
+
+		return itemStack;
 	}
 
 	@Override
 	public UseAnim getUseAnimation(ItemStack item) {
+
 		return UseAnim.BOW;
 
 	}
 
+	@Override
+	public SoundEvent getEatingSound() {
+		
+		return SoundEvents.FIRE_AMBIENT;
+	}
 
 }
