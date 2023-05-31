@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"/ /",
+		"# /",
+		"///"
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:hopper"
+		},
+		"/": {
+			"item": "minecraft:glass_pane"
+		}
+	},
+	"result": {
+		"item": "projectm:empty_bong"
+	}
+}

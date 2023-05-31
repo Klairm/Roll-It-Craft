@@ -3,6 +3,7 @@ package init;
 import com.github.klairm.projectm.ProjectM;
 
 import items.Joint;
+import items.WeedBong;
 import items.DrugSeeds;
 import items.Grinder;
 import net.minecraft.world.item.CreativeModeTab;
@@ -23,8 +24,11 @@ public class ItemInit {
 
 	public static final RegistryObject<DrugSeeds> WEED_SEEDS = ITEMS.register("weed_seeds",
 			() -> new DrugSeeds(new Item.Properties().tab(instance)));
-
 	public static final RegistryObject<Item> GRINDED = ITEMS.register("grinded_weed",
 			() -> new Item(new Item.Properties().tab(instance)));
+
+	public static final RegistryObject<Item> EMPTY_BONG = ITEMS.register("empty_bong",
+			() -> new Item(new Item.Properties().tab(instance)));
+	public static final RegistryObject<WeedBong> WEED_BONG = ITEMS.register("weed_bong", () -> new WeedBong());
 
 }

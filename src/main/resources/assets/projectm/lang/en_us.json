@@ -7,5 +7,7 @@
 	"item.projectm.grinder": "Grinder",
 	"item.projectm.grinded_weed": "Grinded Weed",
 	"block.projectm.weed_plant": "Weed Plant",
-	"block.projectm.drying_rack": "Drying Rack"
+	"block.projectm.drying_rack": "Drying Rack",
+	"item.projectm.weed_bong": "Bong with weed",
+	"item.projectm.empty_bong": "Empty bong"
 }
