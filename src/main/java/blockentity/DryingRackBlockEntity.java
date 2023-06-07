@@ -22,6 +22,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -40,7 +42,7 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 	protected final int size = 1;
 	int timer = 0;
 	int time = 0;
-	private final int processTime = 60;
+	private final int processTime = 300;
 
 	public final ItemStackHandler inventory;
 
@@ -82,23 +84,42 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 
 	public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T be) {
 		DryingRackBlockEntity dryingEntity = (DryingRackBlockEntity) be;
-
+		if (!canSurvive(level, pos)) {
+			level.destroyBlock(pos, true);
+		}
 		if (dryingEntity.isActive && !level.isClientSide()) {
 
 			dryingEntity.timer++;
 			if (dryingEntity.timer > 20) { // 1 second is equal to 20 ticks
 				dryingEntity.timer = 0;
-				dryingEntity.time++;
 
-				if (dryingEntity.time == dryingEntity.processTime) {
+				dryingEntity.setTime(1);
+
+				if (dryingEntity.time >= dryingEntity.processTime) {
 					dryingEntity.inventory.extractItem(0, 1, false);
 					dryingEntity.inventory.insertItem(0, new ItemStack(ItemInit.DRY_BUD.get()), false);
-					dryingEntity.time = 0;
+
+					dryingEntity.setTime(0);
 					dryingEntity.updateEntity();
 					dryingEntity.setActive();
 
 				}
 			}
+		}
+
+	}
+
+	public static boolean canSurvive(Level level, BlockPos pos) {
+		Block blockNorth = level.getBlockState(pos.north()).getBlock();
+		Block blockSouth = level.getBlockState(pos.south()).getBlock();
+		Block blockWest = level.getBlockState(pos.west()).getBlock();
+		Block blockEast = level.getBlockState(pos.east()).getBlock();
+
+		if (blockNorth == Blocks.AIR && blockSouth == Blocks.AIR && blockWest == Blocks.AIR
+				&& blockEast == Blocks.AIR) {
+			return false;
+		} else {
+			return true;
 		}
 
 	}
@@ -123,10 +144,8 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 		super.saveAdditional(nbt);
 
 		nbt.putBoolean("active", this.isActive);
-		if (nbt.contains("item")) {
-
-			nbt.put("item", nbt.getCompound("item"));
-		}
+		nbt.put("item", this.inventory.getStackInSlot(0).serializeNBT());
+		nbt.putInt("timeProcessed", this.time);
 
 	}
 
@@ -135,10 +154,19 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 
 		super.load(nbt);
 		this.isActive = nbt.getBoolean("active");
-
+		this.time = nbt.getInt("timeProcessed");
 		if (nbt.contains("item")) {
 			CompoundTag itemTag = nbt.getCompound("item");
 			this.inventory.setStackInSlot(0, ItemStack.of(itemTag));
+		}
+
+	}
+
+	public void setTime(int time) {
+		if (time == 0) {
+			this.time = time;
+		} else {
+			this.time += time;
 		}
 
 	}
