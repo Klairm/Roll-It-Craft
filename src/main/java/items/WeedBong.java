@@ -1,6 +1,7 @@
 package items;
 
 import init.ItemInit;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -63,15 +64,24 @@ public class WeedBong extends Item {
 		for (MobEffectInstance effect : effects) { // why not
 			pLivingEntity.addEffect(effect, pLivingEntity);
 		}
-
+		pLevel.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,
+				pLivingEntity.getLookAngle().x + pLivingEntity.getX(),
+				pLivingEntity.getY() + pLivingEntity.getLookAngle().y + 1.8,
+				pLivingEntity.getLookAngle().z + pLivingEntity.getZ(), 0, 0.005, 0.005);
 		pLevel.playLocalSound(pLivingEntity.getX(), pLivingEntity.getY(), pLivingEntity.getZ(),
 				SoundEvents.BUBBLE_COLUMN_BUBBLE_POP, SoundSource.PLAYERS, 20, 1.0F, true);
-		pStack.hurtAndBreak(50, pLivingEntity, (Player) -> {
-			Player.broadcastBreakEvent(pLivingEntity.getUsedItemHand());
-		});
+		
 
 		pStack.finishUsingItem(pLevel, pLivingEntity);
 
+	}
+	
+	@Override
+	public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) {
+		pStack.hurtAndBreak(20, pLivingEntity, (Player) -> {
+			Player.broadcastBreakEvent(pLivingEntity.getUsedItemHand());
+		});
+		return super.finishUsingItem(pStack, pLevel, pLivingEntity);
 	}
 
 	@Override
@@ -82,7 +92,7 @@ public class WeedBong extends Item {
 
 	@Override
 	public int getUseDuration(ItemStack pStack) {
-		return 1500;
+		return 60;
 
 	}
 

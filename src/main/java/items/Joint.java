@@ -4,6 +4,7 @@ import init.ItemInit;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,15 +23,7 @@ import net.minecraft.world.level.Level;
 public class Joint extends Item {
 
 	public Joint() {
-		super(new Item.Properties().defaultDurability(100).tab(ItemInit.instance)
-				.food(new FoodProperties.Builder().nutrition(0).alwaysEat()
-						.effect(() -> new MobEffectInstance(MobEffects.HUNGER, 2000), 1)
-						.effect(() -> new MobEffectInstance(MobEffects.BLINDNESS, 1000), 1)
-						.effect(() -> new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 1000), 1)
-						.effect(() -> new MobEffectInstance(MobEffects.HEALTH_BOOST, 3000), 1)
-						.effect(() -> new MobEffectInstance(MobEffects.WEAKNESS, 1000), 1)
-
-						.build()));
+		super(new Item.Properties().defaultDurability(100).tab(ItemInit.instance));
 
 	}
 
@@ -38,40 +31,47 @@ public class Joint extends Item {
 	public InteractionResultHolder<ItemStack> use(Level level, Player entity, InteractionHand interactionHand) {
 
 		ItemStack itemstack = entity.getItemInHand(interactionHand);
-		if (itemstack.isEdible()) {
-			if (entity.canEat(itemstack.getFoodProperties(entity).canAlwaysEat())) {
-				entity.startUsingItem(interactionHand);
-				RandomSource randomsource = entity.getRandom();
-				for (int i = 0; i < 2; i++) {
-					level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, (double) entity.getX() + 0.8D,
-							(double) entity.getY() + randomsource.nextDouble() + randomsource.nextDouble(),
-							(double) entity.getZ() + 0.5D
-									+ randomsource.nextDouble() / 3.0D * (double) (randomsource.nextBoolean() ? 1 : -1),
-							0, 0.05D, 0.05D);
-				}
 
-				return InteractionResultHolder.consume(itemstack);
-			} else {
-				return InteractionResultHolder.fail(itemstack);
-			}
-		} else {
-			return InteractionResultHolder.pass(entity.getItemInHand(interactionHand));
+		entity.startUsingItem(interactionHand);
+
+		System.out.println(entity.getLookAngle());
+		for (int i = 0; i < 2; i++) {
+			level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, entity.getLookAngle().x + entity.getX(),
+					entity.getY() + entity.getLookAngle().y + 1.8, entity.getLookAngle().z + entity.getZ(), 0, 0.005,
+					0.005);
 		}
+
+		return InteractionResultHolder.consume(itemstack);
+
 	}
 
 	@Override
-	public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity entity) {
-		RandomSource randomsource = entity.getRandom();
-		level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE,
-				(double) entity.getX() + 0.5D
-						+ randomsource.nextDouble() / 4.0D * (double) (randomsource.nextBoolean() ? 1 : -1),
-				(double) entity.getY() + 0.4D,
-				(double) entity.getZ() + 0.5D
-						+ randomsource.nextDouble() / 4.0D * (double) (randomsource.nextBoolean() ? 1 : -1),
-				0.0D, 0.005D, 0.0D);
-		entity.playSound(getEatingSound(), 50, 1);
+	public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeCharged) {
 
-		return itemStack;
+		MobEffectInstance[] effects = { new MobEffectInstance(MobEffects.BLINDNESS, 1000),
+				new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 1500), new MobEffectInstance(MobEffects.WEAKNESS, 1000),
+				new MobEffectInstance(MobEffects.HEALTH_BOOST, 3000), new MobEffectInstance(MobEffects.HUNGER, 2000) };
+
+		for (MobEffectInstance effect : effects) {
+			pLivingEntity.addEffect(effect, pLivingEntity);
+		}
+
+		pLevel.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE,
+				pLivingEntity.getLookAngle().x + pLivingEntity.getX(),
+				pLivingEntity.getY() + pLivingEntity.getLookAngle().y + 1.8,
+				pLivingEntity.getLookAngle().z + pLivingEntity.getZ(), 0, 0.005, 0.005);
+		pLivingEntity.playSound(getEatingSound(), 50, 1);
+
+		pStack.finishUsingItem(pLevel, pLivingEntity);
+
+	}
+
+	@Override
+	public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) {
+		pStack.hurtAndBreak(5, pLivingEntity, (Player) -> {
+			Player.broadcastBreakEvent(pLivingEntity.getUsedItemHand());
+		});
+		return super.finishUsingItem(pStack, pLevel, pLivingEntity);
 	}
 
 	@Override
@@ -82,8 +82,14 @@ public class Joint extends Item {
 	}
 
 	@Override
+	public int getUseDuration(ItemStack pStack) {
+		return 50;
+
+	}
+
+	@Override
 	public SoundEvent getEatingSound() {
-		
+
 		return SoundEvents.FIRE_AMBIENT;
 	}
 
