@@ -52,9 +52,9 @@ public class DrugPlant extends SugarCaneBlock {
 						world.setBlockAndUpdate(pos.above(), this.defaultBlockState());
 						net.minecraftforge.common.ForgeHooks.onCropsGrowPost(world, pos.above(),
 								this.defaultBlockState());
-						world.setBlock(pos, state.setValue(AGE, Integer.valueOf(0)), 4);
+						world.setBlock(pos, state.setValue(AGE, 0), 4);
 					} else {
-						world.setBlock(pos, state.setValue(AGE, Integer.valueOf(j + 1)), 4);
+						world.setBlock(pos, state.setValue(AGE, j + 1), 4);
 					}
 				}
 			}

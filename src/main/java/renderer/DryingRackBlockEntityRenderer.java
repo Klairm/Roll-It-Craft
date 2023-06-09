@@ -34,26 +34,21 @@ public class DryingRackBlockEntityRenderer implements BlockEntityRenderer<Drying
 		poseStack.pushPose();
 
 		switch (BE.getBlockState().getValue(DryingRack.FACING)) {
-		case EAST:
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
-			poseStack.translate(-0.5f, 0.45f, 0.1f);
+		case EAST -> {
+                    poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
+                    poseStack.translate(-0.5f, 0.45f, 0.1f);
+                }
 
-			break;
+		case NORTH -> poseStack.translate(0.5f, 0.48f, 0.9f);
+		case SOUTH -> {
+                    poseStack.mulPose(Vector3f.YP.rotationDegrees(-180));
+                    poseStack.translate(-0.5f, 0.46f, -0.1f);
+                }
 
-		case NORTH:
-			poseStack.translate(0.5f, 0.48f, 0.9f);
-			break;
-		case SOUTH:
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(-180));
-			poseStack.translate(-0.5f, 0.46f, -0.1f);
-
-			break;
-
-		case WEST:
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(-90));
-			poseStack.translate(0.5f, 0.44f, -0.9f);
-
-			break;
+		case WEST -> {
+                    poseStack.mulPose(Vector3f.YP.rotationDegrees(-90));
+                    poseStack.translate(0.5f, 0.44f, -0.9f);
+                }
 
 		}
 

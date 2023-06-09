@@ -115,12 +115,8 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 		Block blockWest = level.getBlockState(pos.west()).getBlock();
 		Block blockEast = level.getBlockState(pos.east()).getBlock();
 
-		if (blockNorth == Blocks.AIR && blockSouth == Blocks.AIR && blockWest == Blocks.AIR
-				&& blockEast == Blocks.AIR) {
-			return false;
-		} else {
-			return true;
-		}
+            return !(blockNorth == Blocks.AIR && blockSouth == Blocks.AIR && blockWest == Blocks.AIR
+                    && blockEast == Blocks.AIR);
 
 	}
 

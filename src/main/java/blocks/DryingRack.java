@@ -109,28 +109,13 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext collisionContext) {
 
-		switch (state.getValue(FACING)) {
-
-		case EAST:
-			SHAPE = Block.box(0, 11, 0, 2, 15, 16);
-
-			break;
-		case NORTH:
-			SHAPE = Block.box(0, 11, 14, 16, 15, 16);
-
-			break;
-		case SOUTH:
-			SHAPE = Block.box(0, 11, 0, 16, 15, 2);
-			break;
-
-		case WEST:
-			SHAPE = Block.box(14, 11, 0, 16, 15, 16);
-			break;
-		default:
-			SHAPE = Block.box(0, 10, 14, 16, 12, 16);
-			break;
-
-		}
+            SHAPE = switch (state.getValue(FACING)) {
+                case EAST -> Block.box(0, 11, 0, 2, 15, 16);
+                case NORTH -> Block.box(0, 11, 14, 16, 15, 16);
+                case SOUTH -> Block.box(0, 11, 0, 16, 15, 2);
+                case WEST -> Block.box(14, 11, 0, 16, 15, 16);
+                default -> Block.box(0, 10, 14, 16, 12, 16);
+            };
 
 		return SHAPE;
 	}
