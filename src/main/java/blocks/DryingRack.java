@@ -54,6 +54,7 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 
 				if (dryingRackEntity.inventory.getStackInSlot(0).isEmpty()) {
 					if (player.getItemInHand(interactionHand).getItem().asItem() == ItemInit.BUD.get()) {
+						player.getInventory().removeFromSelected(false);
 						dryingRackEntity.inventory.insertItem(0, new ItemStack(ItemInit.BUD.get()), false);
 						dryingRackEntity.setActive();
 						dryingRackEntity.updateEntity();
