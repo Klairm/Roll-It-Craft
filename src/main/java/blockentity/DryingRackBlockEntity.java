@@ -2,25 +2,19 @@
 package blockentity;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import com.github.klairm.projectm.ProjectM;
-import com.mojang.datafixers.types.templates.Tag;
 
 import init.BlockEntityInit;
 import init.ItemInit;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
+
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -29,7 +23,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
+
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -83,7 +77,9 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 		};
 	}
 
+	// TODO: Make tick() method modular, using recipes to process items.
 	public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T be) {
+
 		DryingRackBlockEntity dryingEntity = (DryingRackBlockEntity) be;
 		if (!canSurvive(level, pos)) {
 			level.destroyBlock(pos, true);
@@ -116,8 +112,8 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 		Block blockWest = level.getBlockState(pos.west()).getBlock();
 		Block blockEast = level.getBlockState(pos.east()).getBlock();
 
-            return !(blockNorth == Blocks.AIR && blockSouth == Blocks.AIR && blockWest == Blocks.AIR
-                    && blockEast == Blocks.AIR);
+		return !(blockNorth == Blocks.AIR && blockSouth == Blocks.AIR && blockWest == Blocks.AIR
+				&& blockEast == Blocks.AIR);
 
 	}
 
@@ -184,6 +180,24 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 
 	}
 
+	public void dropItemStack(Level pLevel, double pX, double pY, double pZ, ItemStack pStack) {
+		double d0 = (double) EntityType.ITEM.getWidth();
+		double d1 = 1.0D - d0;
+		double d2 = d0 / 2.0D;
+		double d3 = Math.floor(pX) + pLevel.random.nextDouble() * d1 + d2;
+		double d4 = Math.floor(pY) + pLevel.random.nextDouble() * d1;
+		double d5 = Math.floor(pZ) + pLevel.random.nextDouble() * d1 + d2;
+
+		while (!pStack.isEmpty()) {
+			ItemEntity itementity = new ItemEntity(pLevel, d3, d4, d5, pStack.split(pLevel.random.nextInt(21) + 10));
+			float f = 0.05F;
+			itementity.setDeltaMovement(pLevel.random.triangle(0.0D, 0.11485000171139836D),
+					pLevel.random.triangle(0.2D, 0.11485000171139836D),
+					pLevel.random.triangle(0.0D, 0.11485000171139836D));
+			pLevel.addFreshEntity(itementity);
+		}
+	}
+
 	@Override
 	public CompoundTag getUpdateTag() {
 
@@ -222,4 +236,3 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 	}
 
 }
-
