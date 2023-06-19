@@ -81,9 +81,7 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 	public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T be) {
 
 		DryingRackBlockEntity dryingEntity = (DryingRackBlockEntity) be;
-		if (!canSurvive(level, pos)) {
-			level.destroyBlock(pos, true);
-		}
+
 		if (dryingEntity.isActive && !level.isClientSide()) {
 
 			dryingEntity.timer++;
@@ -103,17 +101,6 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 				}
 			}
 		}
-
-	}
-
-	public static boolean canSurvive(Level level, BlockPos pos) {
-		Block blockNorth = level.getBlockState(pos.north()).getBlock();
-		Block blockSouth = level.getBlockState(pos.south()).getBlock();
-		Block blockWest = level.getBlockState(pos.west()).getBlock();
-		Block blockEast = level.getBlockState(pos.east()).getBlock();
-
-		return !(blockNorth == Blocks.AIR && blockSouth == Blocks.AIR && blockWest == Blocks.AIR
-				&& blockEast == Blocks.AIR);
 
 	}
 

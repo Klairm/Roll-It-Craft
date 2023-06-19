@@ -6,7 +6,7 @@ import init.BlockEntityInit;
 import init.ItemInit;
 
 import net.minecraft.core.BlockPos;
-
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 
@@ -15,7 +15,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
@@ -42,6 +45,16 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 		super(props);
 
 	}
+
+	public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+		Direction direction = pState.getValue(FACING);
+		BlockPos blockpos = pPos.relative(direction.getOpposite());
+		BlockState blockstate = pLevel.getBlockState(blockpos);
+		return blockstate.isFaceSturdy(pLevel, blockpos, direction);
+	}
+	public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
+	      return pFacing.getOpposite() == pState.getValue(FACING) && !pState.canSurvive(pLevel, pCurrentPos) ? Blocks.AIR.defaultBlockState() : pState;
+	   }
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
