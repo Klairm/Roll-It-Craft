@@ -28,9 +28,12 @@ public class BlockInit {
 
 	public static final RegistryObject<DrugPlant> WEED_PLANT = BLOCKS.register("weed_plant",
 			() -> new DrugPlant(BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak()
-					.sound(SoundType.GRASS), 5));
+					.sound(SoundType.GRASS), 4));
+	public static final RegistryObject<DrugPlant> COCA_PLANT = BLOCKS.register("coca_plant",
+			() -> new DrugPlant(BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak()
+					.sound(SoundType.GRASS), 2));
 	public static final RegistryObject<Block> DRYING_RACK = BLOCKS.register("drying_rack",
-			() -> new DryingRack(Block.Properties.copy(Blocks.STONE)));
+			() -> new DryingRack(Block.Properties.copy(Blocks.OAK_PLANKS)));
 
 	@SubscribeEvent
 	public static void onRegisterItems(final RegisterEvent event) {

@@ -27,6 +27,10 @@ public class ModEvents {
 					new ItemStack(ItemInit.WEED_SEEDS.get(), 5), 5, 8, 0.5F));
 			trades.get(1).add((trader, rand) -> new MerchantOffer(new ItemStack(ItemInit.BUD.get(), 10),
 					new ItemStack(ItemInit.GRINDER.get(), 1), 2, 3, 0.8F));
+			trades.get(1).add((trader, rand) -> new MerchantOffer(new ItemStack(Items.DIAMOND, 5),
+					new ItemStack(ItemInit.COCA_BAG.get(), 1), 2, 3, 0.8F));
+			trades.get(1).add((trader, rand) -> new MerchantOffer(new ItemStack(Items.DIAMOND, 2),
+					new ItemStack(ItemInit.COCA_SEEDS.get(), 2), 2, 3, 0.8F));
 		}
 	}
 

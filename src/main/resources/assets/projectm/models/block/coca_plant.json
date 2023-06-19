@@ -1,0 +1,7 @@
+{
+    "parent":"block/cross",
+    "textures" : {
+        "cross" : "projectm:blocks/coca_plant"
+    },
+    "render_type" : "cutout"
+}

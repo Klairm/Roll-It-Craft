@@ -24,11 +24,19 @@ public class ItemInit {
 
 	public static final RegistryObject<DrugSeeds> WEED_SEEDS = ITEMS.register("weed_seeds",
 			() -> new DrugSeeds(new Item.Properties().tab(instance)));
+
 	public static final RegistryObject<Item> GRINDED = ITEMS.register("grinded_weed",
 			() -> new Item(new Item.Properties().tab(instance)));
 
 	public static final RegistryObject<Item> EMPTY_BONG = ITEMS.register("empty_bong",
 			() -> new Item(new Item.Properties().tab(instance)));
 	public static final RegistryObject<WeedBong> WEED_BONG = ITEMS.register("weed_bong", () -> new WeedBong());
+
+	public static final RegistryObject<DrugSeeds> COCA_SEEDS = ITEMS.register("coca_seeds",
+			() -> new DrugSeeds(new Item.Properties().tab(instance)));
+	public static final RegistryObject<Item> COCA_BAG = ITEMS.register("coca_bag",
+			() -> new Item(new Item.Properties().tab(instance)));
+	public static final RegistryObject<Item> COCA_LEAF = ITEMS.register("coca_leaf",
+			() -> new Item(new Item.Properties().tab(instance)));
 
 }

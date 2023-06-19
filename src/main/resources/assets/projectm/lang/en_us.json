@@ -9,5 +9,9 @@
 	"block.projectm.weed_plant": "Weed Plant",
 	"block.projectm.drying_rack": "Drying Rack",
 	"item.projectm.weed_bong": "Bong with weed",
-	"item.projectm.empty_bong": "Empty bong"
+	"item.projectm.empty_bong": "Empty bong",
+	"item.projectm.coca_seeds": "Cocaine Seeds",
+	"item.projectm.coca_plant": "Cocaine Plant",
+	"item.projectm.coca_bag": "Cocaine Bag",
+	"item.projectm.coca_leaf": "Cocaine Leaf"
 }

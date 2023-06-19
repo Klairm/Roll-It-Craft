@@ -35,8 +35,8 @@ public class DrugSeeds extends Item {
 			Field blockField;
 			BlockPos pos = context.getClickedPos();
 			// Format string to get the name of the seed and the block that will be placed
-			String drugName = this.getName(getDefaultInstance()).getString(5).trim().toUpperCase() + "_PLANT";
-
+			String drugName = this.getName(getDefaultInstance()).getString(4).trim().toUpperCase() + "_PLANT";
+			System.out.println(drugName);
 			/*
 			 * Get the field property of BlockInit using the drugName string, example of
 			 * drugName; WEED_PLANT then we get the object of it which should be a
@@ -70,7 +70,5 @@ public class DrugSeeds extends Item {
 		}
 
 	}
-
-
 
 }
