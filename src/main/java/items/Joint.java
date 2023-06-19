@@ -50,7 +50,7 @@ public class Joint extends Item {
 
 		MobEffectInstance[] effects = { new MobEffectInstance(MobEffects.BLINDNESS, 1000),
 				new MobEffectInstance(MobEffects.DIG_SLOWDOWN, 1500), new MobEffectInstance(MobEffects.WEAKNESS, 1000),
-				new MobEffectInstance(MobEffects.HEALTH_BOOST, 3000), new MobEffectInstance(MobEffects.HUNGER, 2000) };
+				new MobEffectInstance(MobEffects.REGENERATION, 2000), new MobEffectInstance(MobEffects.HUNGER, 2000) };
 
 		for (MobEffectInstance effect : effects) {
 			pLivingEntity.addEffect(effect, pLivingEntity);
