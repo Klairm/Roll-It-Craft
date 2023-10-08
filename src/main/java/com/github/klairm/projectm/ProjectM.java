@@ -3,7 +3,7 @@ package com.github.klairm.projectm;
 import init.BlockEntityInit;
 import init.BlockInit;
 import init.ItemInit;
-
+import init.RecipeTypeInit;
 import net.minecraftforge.common.MinecraftForge;
 
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -25,7 +25,8 @@ public class ProjectM {
 		ItemInit.ITEMS.register(modEventBus);
 		BlockInit.BLOCKS.register(modEventBus);
 		BlockEntityInit.TILE_ENTITY_TYPES.register(modEventBus);
-
+		RecipeTypeInit.SERIALIZERS.register(modEventBus);
+		RecipeTypeInit.RECIPE_TYPES.register(modEventBus);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 

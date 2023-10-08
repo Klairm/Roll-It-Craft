@@ -39,7 +39,7 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 	protected final int size = 1;
 	int timer = 0;
 	int time = 0;
-	private final int processTime = 3; // 300
+	private final int processTime = 300;
 
 	public final ItemStackHandler inventory;
 
@@ -83,11 +83,10 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 		SimpleContainer tempInv = new SimpleContainer(entity.inventory.getSlots());
 
 		tempInv.setItem(0, entity.inventory.getStackInSlot(0));
-		System.out.println(entity.inventory.getStackInSlot(0));
-		System.out.println("temp" + tempInv.getItem(0));
 
 		Optional<DryingRackRecipe> recipe = entity.level.getRecipeManager().getRecipeFor(DryingRackRecipe.Type.INSTANCE,
 				tempInv, entity.level);
+
 		System.out.println(recipe.isPresent());
 		return recipe.isPresent();
 
@@ -101,11 +100,9 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 		if (hasRecipe(dryingEntity) && dryingEntity.isActive) {
 
 			// TODO: Make craft method to clean code.
-			SimpleContainer inventory = new SimpleContainer(dryingEntity.itemHandler.getSlots());
+			SimpleContainer inventory = new SimpleContainer(dryingEntity.inventory.getSlots());
 
-			for (int i = 0; i < dryingEntity.itemHandler.getSlots(); i++) {
-				inventory.setItem(i, dryingEntity.itemHandler.getStackInSlot(i));
-			}
+			inventory.setItem(0, dryingEntity.inventory.getStackInSlot(0));
 
 			Optional<DryingRackRecipe> recipe = dryingEntity.level.getRecipeManager()
 					.getRecipeFor(DryingRackRecipe.Type.INSTANCE, inventory, dryingEntity.level);

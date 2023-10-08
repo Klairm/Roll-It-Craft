@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionResult;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -52,9 +53,13 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 		BlockState blockstate = pLevel.getBlockState(blockpos);
 		return blockstate.isFaceSturdy(pLevel, blockpos, direction);
 	}
-	public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos) {
-	      return pFacing.getOpposite() == pState.getValue(FACING) && !pState.canSurvive(pLevel, pCurrentPos) ? Blocks.AIR.defaultBlockState() : pState;
-	   }
+
+	public BlockState updateShape(BlockState pState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel,
+			BlockPos pCurrentPos, BlockPos pFacingPos) {
+		return pFacing.getOpposite() == pState.getValue(FACING) && !pState.canSurvive(pLevel, pCurrentPos)
+				? Blocks.AIR.defaultBlockState()
+				: pState;
+	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
@@ -69,8 +74,9 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 
 				if (dryingRackEntity.inventory.getStackInSlot(0).isEmpty()) {
 					if (player.getItemInHand(interactionHand).getItem().asItem() == ItemInit.BUD.get()) {
+						
+						dryingRackEntity.inventory.insertItem(0, new ItemStack(player.getItemInHand(interactionHand).getItem()), false);
 						player.getInventory().removeFromSelected(false);
-						dryingRackEntity.inventory.insertItem(0, new ItemStack(ItemInit.BUD.get()), false);
 						dryingRackEntity.setActive();
 						dryingRackEntity.updateEntity();
 

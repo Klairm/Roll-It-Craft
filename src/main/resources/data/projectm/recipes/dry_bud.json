@@ -1,11 +1,9 @@
 {
-  "type": "projectm:drying_rack_process",
-  "ingredients": [
-    {
-      "item": "projectm:bud"
-    }
-  ],
-  "output": {
-    "item": "projectm:dry_bud"
+  "type" : "projectm:drying_rack_process",
+  "ingredients" : [ {
+    "item" : "projectm:bud"
+  } ],
+  "output" : {
+    "item" : "projectm:dry_bud"
   }
 }

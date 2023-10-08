@@ -37,11 +37,8 @@ public class DryingRackRecipe implements Recipe<SimpleContainer> {
 
 	@Override
 	public boolean matches(SimpleContainer pContainer, Level pLevel) {
-		if (pLevel.isClientSide()) {
-			return false;
-		}
 		
-		return recipeItems.get(0).test(pContainer.getItem(0)) || recipeItems.get(0).test(pContainer.getItem(1));
+		return recipeItems.get(0).test(pContainer.getItem(0)); 
 	}
 
 	@Override
@@ -101,7 +98,7 @@ public class DryingRackRecipe implements Recipe<SimpleContainer> {
 		@Override
 		public DryingRackRecipe fromJson(ResourceLocation pRecipeId, JsonObject json) {
 			ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
-			
+
 			JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
 			NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
 			for (int i = 0; i < inputs.size(); i++) {
