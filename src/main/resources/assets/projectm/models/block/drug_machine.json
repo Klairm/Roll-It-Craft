@@ -1,0 +1,37 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "projectm:blocks/drug_machine",
+		"particle": "projectm:blocks/drug_machine"
+	},
+	"elements": [
+		{
+			"from": [0.1, 0, 0],
+			"to": [16.1, 14, 16],
+			"faces": {
+				"north": {"uv": [4, 0, 8, 3.5], "texture": "#0"},
+				"east": {"uv": [4, 3.5, 8, 7], "texture": "#0"},
+				"south": {"uv": [4, 7, 8, 10.5], "texture": "#0"},
+				"west": {"uv": [0, 8, 4, 11.5], "texture": "#0"},
+				"up": {"uv": [4, 4, 0, 0], "texture": "#0"},
+				"down": {"uv": [4, 4, 0, 8], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [54, 0, 0],
+			"translation": [0, 1.25, 0],
+			"scale": [0.48, 0.46, 0.43]
+		}
+	},
+	"groups": [
+		{
+			"name": "VoxelShapes",
+			"origin": [0, 0, 0],
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

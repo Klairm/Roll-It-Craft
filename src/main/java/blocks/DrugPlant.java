@@ -62,6 +62,7 @@ public class DrugPlant extends SugarCaneBlock {
 
 	}
 
+
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
 		BlockState soil = world.getBlockState(pos.below());

@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.github.klairm.projectm.ProjectM;
 
+import blocks.DrugMachine;
 import blocks.DrugPlant;
 import blocks.DryingRack;
 import net.minecraft.world.item.BlockItem;
@@ -29,11 +30,16 @@ public class BlockInit {
 	public static final RegistryObject<DrugPlant> WEED_PLANT = BLOCKS.register("weed_plant",
 			() -> new DrugPlant(BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak()
 					.sound(SoundType.GRASS), 4));
+	
 	public static final RegistryObject<DrugPlant> COCA_PLANT = BLOCKS.register("coca_plant",
 			() -> new DrugPlant(BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().instabreak()
 					.sound(SoundType.GRASS), 2));
+	
 	public static final RegistryObject<Block> DRYING_RACK = BLOCKS.register("drying_rack",
 			() -> new DryingRack(Block.Properties.copy(Blocks.OAK_PLANKS)));
+	
+	public static final RegistryObject<DrugMachine> DRUG_MACHINE = BLOCKS.register("drug_machine",
+			() -> new DrugMachine(BlockBehaviour.Properties.copy(Blocks.STONE)));
 
 	@SubscribeEvent
 	public static void onRegisterItems(final RegisterEvent event) {

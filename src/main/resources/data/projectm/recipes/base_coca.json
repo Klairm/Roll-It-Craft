@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "projectm:crushed_coca"
+		},
+		{
+			"item": "minecraft:gunpowder"
+		},
+		{ 
+			"item" : "minecraft:coal"
+		},
+		{ 
+		"item" : "minecraft:redstone"
+		},
+		{
+		"item": "minecraft:sugar"
+		}
+	],
+	"result": {
+		"item": "projectm:base_coca"
+	}
+}

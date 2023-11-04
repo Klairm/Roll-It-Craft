@@ -3,7 +3,7 @@ package renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 
-import blockentity.DryingRackBlockEntity;
+import blockentity.DryingRackEntity;
 import blocks.DryingRack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
-public class DryingRackBlockEntityRenderer implements BlockEntityRenderer<DryingRackBlockEntity> {
+public class DryingRackBlockEntityRenderer implements BlockEntityRenderer<DryingRackEntity> {
 
 	public DryingRackBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 		super();
@@ -22,7 +22,7 @@ public class DryingRackBlockEntityRenderer implements BlockEntityRenderer<Drying
 	}
 
 	@Override
-	public void render(DryingRackBlockEntity BE, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+	public void render(DryingRackEntity BE, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
 			int packedLight, int packedOverlay) {
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 		int i = (int) BE.getBlockPos().asLong();

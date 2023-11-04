@@ -1,64 +1,99 @@
-
 package blockentity;
 
 import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 
+import gui.DrugMachineMenu;
 import init.BlockEntityInit;
-import init.ItemInit;
 import net.minecraft.core.BlockPos;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Container;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.BlastFurnaceMenu;
+import net.minecraft.world.inventory.BrewingStandMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.FurnaceMenu;
+import net.minecraft.world.inventory.SmokerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import recipe.DrugMachineRecipe;
 import recipe.DryingRackRecipe;
 
-public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
+public class DrugMachineEntity extends BlockEntity implements EntityBlock, MenuProvider {
 
-	boolean isActive = false;
+	boolean isActive = true;
 	protected final int size = 1;
 	int timer = 0;
 	int time = 0;
-	private final int processTime = 300;
+	private int processTime = 5;
 
 	public final ItemStackHandler inventory;
 
+	protected final ContainerData data;
 	private LazyOptional<IItemHandler> lazyItemhandler = LazyOptional.empty();
-	private ItemStackHandler itemHandler;
+	private ItemStackHandler itemHandler = new ItemStackHandler(2) {
+		@Override
+		protected void onContentsChanged(int slot) {
+			setChanged();
+		}
+	};;
 
-	public DryingRackBlockEntity(BlockPos pos, BlockState state) {
-		super(BlockEntityInit.DRYING_RACK.get(), pos, state);
+	public DrugMachineEntity(BlockPos pos, BlockState state) {
+		super(BlockEntityInit.DRUG_MACHINE.get(), pos, state);
+		this.data = new ContainerData() {
+			@Override
+			public int get(int index) {
+				return switch (index) {
+				case 0 -> DrugMachineEntity.this.timer;
+				case 1 -> DrugMachineEntity.this.processTime;
+				default -> 0;
+				};
+			}
+
+			@Override
+			public void set(int index, int value) {
+				switch (index) {
+				case 0 -> DrugMachineEntity.this.timer = value;
+				case 1 -> DrugMachineEntity.this.processTime = value;
+				}
+			}
+
+			@Override
+			public int getCount() {
+				return 2;
+			}
+		};
 
 		this.inventory = this.createInventory();
 
 	}
 
-	public LazyOptional<IItemHandler> getLazyItemhandler() {
-		return this.lazyItemhandler;
+	protected Component getDefaultName() {
+		return Component.translatable("container.furnace");
 	}
 
-	public ItemStack getRenderStack() {
-		return this.inventory.getStackInSlot(0);
+	public LazyOptional<IItemHandler> getLazyItemhandler() {
+		return this.lazyItemhandler;
 	}
 
 	private ItemStackHandler createInventory() {
@@ -79,7 +114,7 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 		};
 	}
 
-	private static boolean hasRecipe(DryingRackBlockEntity entity) {
+	private static boolean hasRecipe(DrugMachineEntity entity) {
 		SimpleContainer tempInv = new SimpleContainer(entity.inventory.getSlots());
 
 		tempInv.setItem(0, entity.inventory.getStackInSlot(0));
@@ -87,50 +122,47 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 		Optional<DryingRackRecipe> recipe = entity.level.getRecipeManager().getRecipeFor(DryingRackRecipe.Type.INSTANCE,
 				tempInv, entity.level);
 
-		System.out.println(recipe.isPresent());
 		return recipe.isPresent();
 
 	}
 
 	public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T be) {
+
 		if (level.isClientSide()) {
 			return;
 		}
-		DryingRackBlockEntity dryingEntity = (DryingRackBlockEntity) be;
-		if (hasRecipe(dryingEntity) && dryingEntity.isActive) {
+		DrugMachineEntity drugMachineEntity = (DrugMachineEntity) be;
+		SimpleContainer inventory = new SimpleContainer(drugMachineEntity.inventory.getSlots());
+		System.out.println(drugMachineEntity.inventory.getStackInSlot(1));
+		if (hasRecipe(drugMachineEntity) ) {
+			
+			
+			//SimpleContainer inventory = new SimpleContainer(drugMachineEntity.inventory.getSlots());
+			System.out.println(drugMachineEntity.inventory.getStackInSlot(0));
+			inventory.setItem(0, drugMachineEntity.inventory.getStackInSlot(0));
 
-			// TODO: Make craft method to clean code.
-			SimpleContainer inventory = new SimpleContainer(dryingEntity.inventory.getSlots());
+			Optional<DrugMachineRecipe> recipe = drugMachineEntity.level.getRecipeManager()
+					.getRecipeFor(DrugMachineRecipe.Type.INSTANCE, inventory, drugMachineEntity.level);
+			drugMachineEntity.timer++;
+			if (drugMachineEntity.timer > 20) {
+				drugMachineEntity.timer = 0;
 
-			inventory.setItem(0, dryingEntity.inventory.getStackInSlot(0));
+				drugMachineEntity.setTime(1);
+				if (drugMachineEntity.time >= drugMachineEntity.processTime) {
+					drugMachineEntity.inventory.extractItem(0, 1, false);
 
-			Optional<DryingRackRecipe> recipe = dryingEntity.level.getRecipeManager()
-					.getRecipeFor(DryingRackRecipe.Type.INSTANCE, inventory, dryingEntity.level);
-			dryingEntity.timer++;
-			if (dryingEntity.timer > 20) {
-				dryingEntity.timer = 0;
+					drugMachineEntity.inventory.insertItem(0, new ItemStack(recipe.get().getResultItem().getItem()),
+							false);
 
-				dryingEntity.setTime(1);
-				if (dryingEntity.time >= dryingEntity.processTime) {
-					dryingEntity.inventory.extractItem(0, 1, false);
-
-					dryingEntity.inventory.insertItem(0, new ItemStack(recipe.get().getResultItem().getItem()), false);
-
-					dryingEntity.setTime(0);
-					dryingEntity.updateEntity();
-					dryingEntity.setActive();
+					drugMachineEntity.setTime(0);
+					drugMachineEntity.updateEntity();
+					drugMachineEntity.setActive();
 
 				}
 
 			}
 		}
 
-	}
-
-	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-
-		return BlockEntityInit.DRYING_RACK.get().create(pos, state);
 	}
 
 	@Override
@@ -150,6 +182,12 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 		nbt.put("item", this.inventory.getStackInSlot(0).serializeNBT());
 		nbt.putInt("timeProcessed", this.time);
 
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		lazyItemhandler = LazyOptional.of(() -> itemHandler);
 	}
 
 	@Override
@@ -243,6 +281,25 @@ public class DryingRackBlockEntity extends BlockEntity implements EntityBlock {
 	public Packet<ClientGamePacketListener> getUpdatePacket() {
 		// Will get tag from #getUpdateTag
 		return ClientboundBlockEntityDataPacket.create(this);
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+
+		return BlockEntityInit.DRYING_RACK.get().create(pos, state);
+	}
+
+	@Override
+	public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+
+		return new DrugMachineMenu(pContainerId, pPlayerInventory, this, this.data);
+
+	}
+
+	@Override
+	public Component getDisplayName() {
+
+		return Component.translatable("Drug Machine");
 	}
 
 }

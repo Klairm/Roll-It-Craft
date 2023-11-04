@@ -3,6 +3,7 @@ package init;
 import com.github.klairm.projectm.ProjectM;
 
 import items.Joint;
+import items.Mortar;
 import items.WeedBong;
 import items.CocaineBag;
 import items.DrugSeeds;
@@ -35,9 +36,19 @@ public class ItemInit {
 
 	public static final RegistryObject<DrugSeeds> COCA_SEEDS = ITEMS.register("coca_seeds",
 			() -> new DrugSeeds(new Item.Properties().tab(instance)));
+	
 	public static final RegistryObject<CocaineBag> COCA_BAG = ITEMS.register("coca_bag",
 			() -> new CocaineBag(new Item.Properties().tab(instance)));
+	
 	public static final RegistryObject<Item> COCA_LEAF = ITEMS.register("coca_leaf",
 			() -> new Item(new Item.Properties().tab(instance)));
+	
+	public static final RegistryObject<Item> CRUSHED_COCA = ITEMS.register("crushed_coca",
+			() -> new Item(new Item.Properties().tab(instance)));
+	
+	public static final RegistryObject<Item> BASE_COCA = ITEMS.register("base_coca",
+			() -> new Item(new Item.Properties().tab(instance)));
+	
+	public static final RegistryObject<Mortar> MORTAR = ITEMS.register("mortar", () -> new Mortar());
 
 }

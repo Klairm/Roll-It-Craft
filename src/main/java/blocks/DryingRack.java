@@ -1,6 +1,6 @@
 package blocks;
 
-import blockentity.DryingRackBlockEntity;
+import blockentity.DryingRackEntity;
 import init.BlockEntityInit;
 
 import init.ItemInit;
@@ -66,21 +66,21 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 			InteractionHand interactionHand, BlockHitResult hitResult) {
 
 		BlockEntity dryingRack = level.getBlockEntity(pos);
-		DryingRackBlockEntity dryingRackEntity = (DryingRackBlockEntity) dryingRack;
+		DryingRackEntity dryingRackEntity = (DryingRackEntity) dryingRack;
 
 		if (!level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND) {
 
-			if (dryingRack instanceof DryingRackBlockEntity) {
+			if (dryingRack instanceof DryingRackEntity) {
 
 				if (dryingRackEntity.inventory.getStackInSlot(0).isEmpty()) {
-					if (player.getItemInHand(interactionHand).getItem().asItem() == ItemInit.BUD.get()) {
+					
 						
 						dryingRackEntity.inventory.insertItem(0, new ItemStack(player.getItemInHand(interactionHand).getItem()), false);
 						player.getInventory().removeFromSelected(false);
 						dryingRackEntity.setActive();
 						dryingRackEntity.updateEntity();
 
-					}
+					
 
 				} else {
 					dryingRackEntity.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(),
@@ -120,7 +120,7 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 
-		return new DryingRackBlockEntity(pos, state);
+		return new DryingRackEntity(pos, state);
 	}
 
 	@Override
@@ -147,14 +147,14 @@ public class DryingRack extends HorizontalDirectionalBlock implements EntityBloc
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
 			BlockEntityType<T> type) {
 
-		return type == BlockEntityInit.DRYING_RACK.get() ? DryingRackBlockEntity::tick : null;
+		return type == BlockEntityInit.DRYING_RACK.get() ? DryingRackEntity::tick : null;
 	}
 
 	@Override
 	public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
 		if (!pState.is(pNewState.getBlock())) {
 			BlockEntity blockentity = pLevel.getBlockEntity(pPos);
-			DryingRackBlockEntity dryingRackEntity = (DryingRackBlockEntity) blockentity;
+			DryingRackEntity dryingRackEntity = (DryingRackEntity) blockentity;
 
 			dryingRackEntity.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(),
 					dryingRackEntity.inventory.getStackInSlot(0));

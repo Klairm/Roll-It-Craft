@@ -1,0 +1,9 @@
+{
+  "type" : "projectm:drug_machine",
+  "ingredients" : [ {
+    "item" : "projectm:base_coca"
+  } ],
+  "output" : {
+    "item" : "projectm:coca_bag"
+  }
+}

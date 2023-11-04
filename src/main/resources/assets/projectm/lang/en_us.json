@@ -8,10 +8,13 @@
 	"item.projectm.grinded_weed": "Grinded Weed",
 	"block.projectm.weed_plant": "Weed Plant",
 	"block.projectm.drying_rack": "Drying Rack",
+	"block.projectm.drug_machine": "Drug Machine",
 	"item.projectm.weed_bong": "Bong with weed",
 	"item.projectm.empty_bong": "Empty bong",
 	"item.projectm.coca_seeds": "Cocaine Seeds",
 	"item.projectm.coca_plant": "Cocaine Plant",
 	"item.projectm.coca_bag": "Cocaine Bag",
-	"item.projectm.coca_leaf": "Cocaine Leaf"
+	"item.projectm.coca_leaf": "Cocaine Leaf",
+	"item.projectm.coca_base": "Cocaine Base"
+	
 }

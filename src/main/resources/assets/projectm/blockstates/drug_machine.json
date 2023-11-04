@@ -1,0 +1,19 @@
+{
+  "variants" : {
+    "facing=north" : {
+      "model" : "projectm:block/drug_machine"
+    },
+    "facing=south" : {
+      "model" : "projectm:block/drug_machine",
+      "y" : 180
+    },
+    "facing=west" : {
+      "model" : "projectm:block/drug_machine",
+      "y" : 270
+    },
+    "facing=east" : {
+      "model" : "projectm:block/drug_machine",
+      "y" : 90
+    }
+  }
+}
