@@ -32,10 +32,29 @@ public class DrugMachineScreen extends AbstractContainerScreen<DrugMachineMenu> 
 		 RenderSystem.setShader(GameRenderer::getPositionTexShader);
 	      RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 	      RenderSystem.setShaderTexture(0, TEXTURE);
-	      int i = this.leftPos;
-	      int j = this.topPos;
-	      this.blit(pPoseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
-	      
+	      int x = this.leftPos;
+	      int y = this.topPos;
+	      int  progress = menu.getScaledProgress();
+	      System.out.println(progress);
+	      this.blit(pPoseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
+	
+	     // render progress
+	      /*
+	       *  PoseStack
+	       *  ---- Base UI ----
+	       *  X position starting from the left ( ignoring the leftPos attr)
+	       *  Y position starting from the top ( ignoring the topPos attr)
+	       *  
+	       *  ----- Blit image from bitmap --- 
+	       *  X position starting from the left 
+	       *  Y position starting from the top 
+	       *  
+	       *  
+	       */
+	       this.blit(pPoseStack, x + 79,y + 34, 176, 0, progress + 1, 16);
+
+	      // TODO: add string with eta
+	       //drawCenteredString(pPoseStack, font,"a", x, y, progress);
 
 	      
 	      
@@ -47,6 +66,8 @@ public class DrugMachineScreen extends AbstractContainerScreen<DrugMachineMenu> 
 		super.render(pPoseStack, mouseX, mouseY, delta);
 		renderTooltip(pPoseStack, mouseX, mouseY);
 	}
+
+	
 	
 	
 

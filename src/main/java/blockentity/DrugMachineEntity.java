@@ -42,10 +42,9 @@ import recipe.DryingRackRecipe;
 public class DrugMachineEntity extends BlockEntity implements EntityBlock, MenuProvider {
 
 	private boolean isActive = true;
-	private final int size = 1;
 	private int timer = 0;
 	private int time = 0;
-	private int processTime = 5;
+	protected final int PROCESS_TIME = 120;
 
 	protected final ContainerData data;
 	private LazyOptional<IItemHandler> lazyItemhandler = LazyOptional.empty();
@@ -75,7 +74,7 @@ public class DrugMachineEntity extends BlockEntity implements EntityBlock, MenuP
 			public int get(int index) {
 				return switch (index) {
 				case 0 -> DrugMachineEntity.this.timer;
-				case 1 -> DrugMachineEntity.this.processTime;
+				case 1 -> DrugMachineEntity.this.PROCESS_TIME;
 				default -> 0;
 				};
 			}
@@ -84,7 +83,7 @@ public class DrugMachineEntity extends BlockEntity implements EntityBlock, MenuP
 			public void set(int index, int value) {
 				switch (index) {
 				case 0 -> DrugMachineEntity.this.timer = value;
-				case 1 -> DrugMachineEntity.this.processTime = value;
+				
 				}
 			}
 
@@ -141,7 +140,7 @@ public class DrugMachineEntity extends BlockEntity implements EntityBlock, MenuP
 				drugMachineEntity.timer = 0;
 
 				drugMachineEntity.setTime(1);
-				if (drugMachineEntity.time >= drugMachineEntity.processTime) {
+				if (drugMachineEntity.time >= drugMachineEntity.PROCESS_TIME) {
 					drugMachineEntity.inventory.extractItem(0, 1, false);
 
 					drugMachineEntity.inventory.insertItem(1, new ItemStack(recipe.get().getResultItem().getItem()),

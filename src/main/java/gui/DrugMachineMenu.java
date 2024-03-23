@@ -58,9 +58,9 @@ public class DrugMachineMenu extends AbstractContainerMenu {
 	public int getScaledProgress() {
 		int progress = this.data.get(0);
 		int maxProgress = this.data.get(1); // Max Progress
-		int progressArrowSize = 26; // This is the height in pixels of your arrow
+		
 
-		return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+		return progress ;
 	}
 
 	// CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
