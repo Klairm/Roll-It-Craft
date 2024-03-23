@@ -35,16 +35,16 @@ import recipe.DryingRackRecipe;
 
 public class DryingRackEntity extends BlockEntity implements EntityBlock {
 
-	boolean isActive = false;
+	private  boolean isActive = false;
 	protected final int size = 1;
-	int timer = 0;
-	int time = 0;
+	private  int timer = 0;
+	private int time = 0;
 	private final int processTime = 3;
 
 	public final ItemStackHandler inventory;
 
 	private LazyOptional<IItemHandler> lazyItemhandler = LazyOptional.empty();
-	private ItemStackHandler itemHandler;
+//	private ItemStackHandler itemHandler;
 
 	public DryingRackEntity(BlockPos pos, BlockState state) {
 		super(BlockEntityInit.DRYING_RACK.get(), pos, state);
@@ -103,7 +103,7 @@ public class DryingRackEntity extends BlockEntity implements EntityBlock {
 			
 			// TODO: Make craft method to clean code.
 			SimpleContainer inventory = new SimpleContainer(dryingEntity.inventory.getSlots());
-			
+			System.out.println("drying: " + dryingEntity.inventory.getStackInSlot(0));
 			inventory.setItem(0, dryingEntity.inventory.getStackInSlot(0));
 
 			Optional<DryingRackRecipe> recipe = dryingEntity.level.getRecipeManager()

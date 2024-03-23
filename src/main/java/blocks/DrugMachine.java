@@ -1,6 +1,7 @@
 package blocks;
 
 import blockentity.DrugMachineEntity;
+import blockentity.DryingRackEntity;
 import blockentity.DrugMachineEntity;
 import init.BlockEntityInit;
 import net.minecraft.core.BlockPos;
@@ -33,8 +34,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 
 public class DrugMachine extends Block implements EntityBlock {
-	// TODO: Temporary machine to process cocaine, create a dissolver machine and a
-	// mixer one
+	// This is an temporary machine to process cocaine,
+	// TODO: create a dissolver machine and a mixer one
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	private static VoxelShape SHAPE = Block.box(0.1, 0, 0, 16.1, 14, 16);
@@ -45,20 +46,19 @@ public class DrugMachine extends Block implements EntityBlock {
 
 	}
 
-	public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand,
-			BlockHitResult pHit) {
-
-		if (!pLevel.isClientSide()) {
-			BlockEntity entity = pLevel.getBlockEntity(pPos);
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand,
+			BlockHitResult hit) {
+		if (!level.isClientSide()) {
+			BlockEntity entity = level.getBlockEntity(pos);
 			if (entity instanceof DrugMachineEntity) {
-				NetworkHooks.openScreen(((ServerPlayer) pPlayer), (DrugMachineEntity) entity, pPos);
+				NetworkHooks.openScreen(((ServerPlayer) player), (DrugMachineEntity) entity, pos);
 			} else {
 				throw new IllegalStateException("Our Container provider is missing!");
 			}
+			
 		}
-
-		return InteractionResult.sidedSuccess(pLevel.isClientSide());
-
+		return InteractionResult.sidedSuccess(level.isClientSide());
 	}
 
 	@Override
@@ -73,6 +73,7 @@ public class DrugMachine extends Block implements EntityBlock {
 
 	}
 
+	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
 
 		return this.defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
@@ -107,10 +108,13 @@ public class DrugMachine extends Block implements EntityBlock {
 	public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
 		if (!pState.is(pNewState.getBlock())) {
 			BlockEntity blockentity = pLevel.getBlockEntity(pPos);
-			DrugMachineEntity DrugMachineEntity = (DrugMachineEntity) blockentity;
+			DrugMachineEntity drugMachineEntity = (DrugMachineEntity) blockentity;
 
-			DrugMachineEntity.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(),
-					DrugMachineEntity.inventory.getStackInSlot(0));
+			for(int i = 0; i < drugMachineEntity.getInventory().getSlots(); i++) {
+				drugMachineEntity.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(),
+						drugMachineEntity.getInventory().getStackInSlot(i));
+			}
+			
 
 		}
 		super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);

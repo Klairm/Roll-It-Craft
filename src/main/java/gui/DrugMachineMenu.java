@@ -26,24 +26,26 @@ public class DrugMachineMenu extends AbstractContainerMenu {
 
 		this(id, inv, (DrugMachineEntity) inv.player.level.getBlockEntity(extraData.readBlockPos()),
 				new SimpleContainerData(2));
+		
 
 	}
 
-	public DrugMachineMenu(int id, Inventory inv, BlockEntity entity, ContainerData data) {
+	public DrugMachineMenu(int id, Inventory inv, DrugMachineEntity entity, ContainerData data) {
 
 		super(ModMenuTypes.DRUG_MACHINE_MENU.get(), id);
 		checkContainerSize(inv, 2);
-		this.blockEntity = (DrugMachineEntity) entity;
+		this.blockEntity = entity;
 		this.level = inv.player.level;
 		this.data = data;
 
 		addPlayerInventory(inv);
 		addPlayerHotbar(inv);
-
+		
 		this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-			this.addSlot(new SlotItemHandler(handler, 0, 56, 34));  
-			
-			this.addSlot(new SlotItemHandler(handler, 1,116, 35));
+		
+			this.addSlot(new SlotItemHandler(handler, 0, 56, 34));
+
+			this.addSlot(new SlotItemHandler(handler, 1, 116, 35));
 		});
 
 		addDataSlots(data);
@@ -124,8 +126,6 @@ public class DrugMachineMenu extends AbstractContainerMenu {
 		return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()), player,
 				BlockInit.DRUG_MACHINE.get());
 	}
- 
-	
 
 	private void addPlayerInventory(Inventory playerInventory) {
 		for (int i = 0; i < 3; ++i) {

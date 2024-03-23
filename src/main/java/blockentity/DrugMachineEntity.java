@@ -41,22 +41,32 @@ import recipe.DryingRackRecipe;
 
 public class DrugMachineEntity extends BlockEntity implements EntityBlock, MenuProvider {
 
-	boolean isActive = true;
-	protected final int size = 1;
-	int timer = 0;
-	int time = 0;
+	private boolean isActive = true;
+	private final int size = 1;
+	private int timer = 0;
+	private int time = 0;
 	private int processTime = 5;
-
-	public final ItemStackHandler inventory;
 
 	protected final ContainerData data;
 	private LazyOptional<IItemHandler> lazyItemhandler = LazyOptional.empty();
-	private ItemStackHandler itemHandler = new ItemStackHandler(2) {
+	private final ItemStackHandler inventory = new ItemStackHandler(2) {
 		@Override
 		protected void onContentsChanged(int slot) {
 			setChanged();
 		}
-	};;
+
+		@Override
+		public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
+
+			return super.extractItem(slot, amount, simulate);
+		}
+
+		@Override
+		public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+
+			return super.insertItem(slot, stack, simulate);
+		}
+	};
 
 	public DrugMachineEntity(BlockPos pos, BlockState state) {
 		super(BlockEntityInit.DRUG_MACHINE.get(), pos, state);
@@ -84,10 +94,12 @@ public class DrugMachineEntity extends BlockEntity implements EntityBlock, MenuP
 			}
 		};
 
-		this.inventory = this.createInventory();
-
 	}
 
+	
+	public ItemStackHandler getInventory() {
+		return this.inventory;
+	}
 	protected Component getDefaultName() {
 		return Component.translatable("container.furnace");
 	}
@@ -96,31 +108,13 @@ public class DrugMachineEntity extends BlockEntity implements EntityBlock, MenuP
 		return this.lazyItemhandler;
 	}
 
-	private ItemStackHandler createInventory() {
-
-		return new ItemStackHandler(this.size) {
-
-			@Override
-			public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate) {
-
-				return super.extractItem(slot, amount, simulate);
-			}
-
-			@Override
-			public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-
-				return super.insertItem(slot, stack, simulate);
-			}
-		};
-	}
-
 	private static boolean hasRecipe(DrugMachineEntity entity) {
 		SimpleContainer tempInv = new SimpleContainer(entity.inventory.getSlots());
 
 		tempInv.setItem(0, entity.inventory.getStackInSlot(0));
 
-		Optional<DryingRackRecipe> recipe = entity.level.getRecipeManager().getRecipeFor(DryingRackRecipe.Type.INSTANCE,
-				tempInv, entity.level);
+		Optional<DrugMachineRecipe> recipe = entity.level.getRecipeManager()
+				.getRecipeFor(DrugMachineRecipe.Type.INSTANCE, tempInv, entity.level);
 
 		return recipe.isPresent();
 
@@ -133,12 +127,11 @@ public class DrugMachineEntity extends BlockEntity implements EntityBlock, MenuP
 		}
 		DrugMachineEntity drugMachineEntity = (DrugMachineEntity) be;
 		SimpleContainer inventory = new SimpleContainer(drugMachineEntity.inventory.getSlots());
-		System.out.println(drugMachineEntity.inventory.getStackInSlot(1));
-		if (hasRecipe(drugMachineEntity) ) {
+		if (hasRecipe(drugMachineEntity)) {
+
+
+
 			
-			
-			//SimpleContainer inventory = new SimpleContainer(drugMachineEntity.inventory.getSlots());
-			System.out.println(drugMachineEntity.inventory.getStackInSlot(0));
 			inventory.setItem(0, drugMachineEntity.inventory.getStackInSlot(0));
 
 			Optional<DrugMachineRecipe> recipe = drugMachineEntity.level.getRecipeManager()
@@ -151,7 +144,7 @@ public class DrugMachineEntity extends BlockEntity implements EntityBlock, MenuP
 				if (drugMachineEntity.time >= drugMachineEntity.processTime) {
 					drugMachineEntity.inventory.extractItem(0, 1, false);
 
-					drugMachineEntity.inventory.insertItem(0, new ItemStack(recipe.get().getResultItem().getItem()),
+					drugMachineEntity.inventory.insertItem(1, new ItemStack(recipe.get().getResultItem().getItem()),
 							false);
 
 					drugMachineEntity.setTime(0);
@@ -187,7 +180,7 @@ public class DrugMachineEntity extends BlockEntity implements EntityBlock, MenuP
 	@Override
 	public void onLoad() {
 		super.onLoad();
-		lazyItemhandler = LazyOptional.of(() -> itemHandler);
+		lazyItemhandler = LazyOptional.of(() -> inventory);
 	}
 
 	@Override

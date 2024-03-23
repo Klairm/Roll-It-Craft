@@ -12,8 +12,11 @@ import net.minecraft.network.chat.Component;
 
 public class DrugMachineScreen extends AbstractContainerScreen<DrugMachineMenu> {
 
+	
 	private static final ResourceLocation TEXTURE = new ResourceLocation(ProjectM.MOD_ID,
 			"textures/gui/drug_machine.png");
+	
+	
 
 	public DrugMachineScreen(DrugMachineMenu menu, Inventory inventory, Component component) {
 		super(menu, inventory, component);
@@ -28,7 +31,7 @@ public class DrugMachineScreen extends AbstractContainerScreen<DrugMachineMenu> 
 	protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
 		 RenderSystem.setShader(GameRenderer::getPositionTexShader);
 	      RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-	      RenderSystem.setShaderTexture(0, this.TEXTURE);
+	      RenderSystem.setShaderTexture(0, TEXTURE);
 	      int i = this.leftPos;
 	      int j = this.topPos;
 	      this.blit(pPoseStack, i, j, 0, 0, this.imageWidth, this.imageHeight);
@@ -44,5 +47,7 @@ public class DrugMachineScreen extends AbstractContainerScreen<DrugMachineMenu> 
 		super.render(pPoseStack, mouseX, mouseY, delta);
 		renderTooltip(pPoseStack, mouseX, mouseY);
 	}
+	
+	
 
 }
